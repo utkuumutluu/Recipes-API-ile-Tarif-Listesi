@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Recipes API ile Tarif Listesi</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/daisyui@5"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
+    <body>
+        <div class="container mx-auto">
+        <h1 class="mt-4 ml-4 font-bold text-3xl">Recipes</h1>
+
+        <div
+            class="flex flex-col justify-center"
+            id="mainCards"
+        ></div>
+    </div>
+        <script>
+            // Giriş
+            const API_URL = "https://dummyjson.com/recipes";
+            // Gelişme
+            fetch(API_URL)
+                .then((res) => res.json())
+                .then((data) => {
+                    const recipes = data.recipes;
+                    const cards = recipes.map(
+                        (recipes) => `
+                        <div class="card shadow-sm m-4">
+                            <figure>
+                                <img
+                                    class="w-full h-56 object-cover"
+                                    src="${recipes.image}"
+                                />
+                            </figure>
+                            <div class="card-body">
+                                <h2 class="card-title font-bold">
+                                    ${recipes.name}
+                                </h2>
+                                <div class="flex gap-3">
+                                    <span class="badge badge-primary">${recipes.cuisine}</span>
+                                    <span class="badge badge-secondary">${recipes.difficulty}</span>
+                                    <span class="badge badge-accent">${recipes.caloriesPerServing} kcal</span>
+                                </div>
+                                <div class="mt-2 text-gray-500 text-lg font-medium">
+                                    <span>Prep: ${recipes.prepTimeMinutes} min</span>
+                                    <span class="p-1">| Cook: ${recipes.cookTimeMinutes} min |</span>
+                                    <span>Servings: ${recipes.servings}</span>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <img class="size-5" src="star.svg" />
+                                    <img class="size-5" src="star.svg" />
+                                    <img class="size-5" src="star.svg" />
+                                    <img class="size-5" src="star.svg" />
+                                    <img class="size-5" src="star.svg" />
+                                    <span class="ml-2 text-gray-500 text-base"
+                                        >(${recipes.rating}) - ${recipes.reviewCount} reviews</span
+                                    >
+                                </div>
+                                <div>
+                                    <div class="flex flex-wrap gap-2 mt-2">
+                                    ${recipes.tags
+                                        .map(
+                                            (tag) => `
+                                        <span class="badge badge-neutral badge-outline text-gray-800 font-medium tracking-wider">
+                                            ${tag}
+                                        </span>
+                                    `,
+                                        )
+                                        .join("")}
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    );
+                    const html = cards.join("");
+                    mainCards.innerHTML = html;
+                });
+            //Sonuç
+        </script>
+    </body>
+</html>
